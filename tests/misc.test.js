@@ -2,7 +2,7 @@ const request = require('supertest-as-promised');
 const httpStatus = require('http-status');
 const chai = require('chai'); // eslint-disable-line import/newline-after-import
 const expect = chai.expect;
-const app = require('../../index');
+const app = require('../index');
 
 chai.config.includeStack = true;
 
@@ -27,6 +27,18 @@ describe('## Misc', () => {
         .expect(httpStatus.NOT_FOUND)
         .then((res) => {
           expect(res.body.message).to.equal('Not Found');
+          done();
+        })
+        .catch(done);
+    });
+  });
+
+  describe('# Get admin site', () => {
+    it('should return 200 statys', (done) => {
+      request(app)
+        .get('/admin')
+        .expect(httpStatus.OK)
+        .then(() => {
           done();
         })
         .catch(done);

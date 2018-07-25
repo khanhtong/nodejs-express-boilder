@@ -10,9 +10,10 @@ const expressWinston = require('express-winston');
 const expressValidation = require('express-validation');
 const helmet = require('helmet');
 const winstonInstance = require('./winston');
-const routes = require('../index.route');
+const apiRoutes = require('../api.route');
+const adminRoutes = require('../admin.route');
 const config = require('./config');
-const APIError = require('../server/helpers/APIError');
+const APIError = require('../helpers/APIError');
 
 const app = express();
 
@@ -23,6 +24,8 @@ if (config.env === 'development') {
 // parse body params and attache them to req.body
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.set('view engine', 'pug');
 
 app.use(cookieParser());
 app.use(compress());
@@ -47,7 +50,8 @@ if (config.env === 'development') {
 }
 
 // mount all routes on /api path
-app.use('/api', routes);
+app.use('/api', apiRoutes);
+app.use('/admin', adminRoutes);
 
 // if error is not an instanceOf APIError, convert it.
 app.use((err, req, res, next) => {
