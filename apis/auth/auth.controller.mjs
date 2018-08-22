@@ -1,7 +1,7 @@
-const jwt = require('jsonwebtoken');
-const httpStatus = require('http-status');
-const APIError = require('../../helpers/APIError');
-const config = require('../../config/config');
+import jwt from 'jsonwebtoken';
+import httpStatus from 'http-status';
+import APIError from '../../helpers/APIError.mjs';
+import { jwtSecret } from '../../config/config.mjs';
 
 // sample user, used for authentication
 const user = {
@@ -22,7 +22,7 @@ function login(req, res, next) {
   if (req.body.username === user.username && req.body.password === user.password) {
     const token = jwt.sign({
       username: user.username
-    }, config.jwtSecret);
+    }, jwtSecret);
     return res.json({
       token,
       username: user.username
@@ -46,5 +46,5 @@ function getRandomNumber(req, res) {
     num: Math.random() * 100
   });
 }
-
-module.exports = { login, getRandomNumber };
+const authCtrl = { login, getRandomNumber };
+export default authCtrl;

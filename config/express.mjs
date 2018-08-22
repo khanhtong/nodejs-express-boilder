@@ -1,23 +1,23 @@
-const express = require('express');
-const logger = require('morgan');
-const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
-const compress = require('compression');
-const methodOverride = require('method-override');
-const cors = require('cors');
-const httpStatus = require('http-status');
-const expressWinston = require('express-winston');
-const expressValidation = require('express-validation');
-const helmet = require('helmet');
-const winstonInstance = require('./winston');
-const apiRoutes = require('../api.route');
-const adminRoutes = require('../admin.route');
-const config = require('./config');
-const APIError = require('../helpers/APIError');
+import express from 'express';
+import logger from 'morgan';
+import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
+import compress from 'compression';
+import methodOverride from 'method-override';
+import cors from 'cors';
+import httpStatus from 'http-status';
+import expressWinston from 'express-winston';
+import expressValidation from 'express-validation';
+import helmet from 'helmet';
+import winstonInstance from './winston.mjs';
+import apiRoutes from '../api.route.mjs';
+import adminRoutes from '../admin.route.mjs';
+import { env } from './config.mjs';
+import APIError from '../helpers/APIError.mjs';
 
 const app = express();
 
-if (config.env === 'development') {
+if (env === 'development') {
   app.use(logger('dev'));
 }
 
@@ -38,7 +38,7 @@ app.use(helmet());
 app.use(cors());
 
 // enable detailed API logging in dev env
-if (config.env === 'development') {
+if (env === 'development') {
   expressWinston.requestWhitelist.push('body');
   expressWinston.responseWhitelist.push('body');
   app.use(expressWinston.logger({
@@ -74,7 +74,7 @@ app.use((req, res, next) => {
 });
 
 // log error in winston transports except when executing test suite
-if (config.env !== 'test') {
+if (env !== 'test') {
   app.use(expressWinston.errorLogger({
     winstonInstance
   }));
@@ -84,8 +84,8 @@ if (config.env !== 'test') {
 app.use((err, req, res, next) => // eslint-disable-line no-unused-vars
   res.status(err.status).json({
     message: err.isPublic ? err.message : httpStatus[err.status],
-    stack: config.env === 'development' ? err.stack : {}
+    stack: env === 'development' ? err.stack : {}
   })
 );
 
-module.exports = app;
+export default app;
