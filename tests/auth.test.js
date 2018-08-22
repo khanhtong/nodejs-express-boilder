@@ -1,11 +1,12 @@
-const request = require('supertest-as-promised');
-const httpStatus = require('http-status');
-const jwt = require('jsonwebtoken');
-const chai = require('chai'); // eslint-disable-line import/newline-after-import
-const expect = chai.expect;
-const app = require('../index');
-const config = require('../config/config');
+import 'babel-polyfill';
+import request from 'supertest-as-promised';
+import httpStatus from 'http-status';
+import jwt from 'jsonwebtoken';
+import chai from 'chai'; // eslint-disable-line import/newline-after-import
+import app from '../index.mjs';
+import { jwtSecret } from '../config/config.mjs';
 
+const expect = chai.expect;
 chai.config.includeStack = true;
 
 describe('## Auth APIs', () => {
@@ -41,7 +42,7 @@ describe('## Auth APIs', () => {
         .expect(httpStatus.OK)
         .then((res) => {
           expect(res.body).to.have.property('token');
-          jwt.verify(res.body.token, config.jwtSecret, (err, decoded) => {
+          jwt.verify(res.body.token, jwtSecret, (err, decoded) => {
             expect(err).to.not.be.ok; // eslint-disable-line no-unused-expressions
             expect(decoded.username).to.equal(validUserCredentials.username);
             jwtToken = `Bearer ${res.body.token}`;

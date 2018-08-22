@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
-const httpStatus = require('http-status');
-const APIError = require('../helpers/APIError');
+import mongoose from 'mongoose';
+import httpStatus from 'http-status';
+import APIError from '../helpers/APIError.mjs';
 /**
  * User Schema
  */
@@ -29,13 +29,6 @@ const UserSchema = new mongoose.Schema({
   salt: String,
   password: String
 });
-
-/**
- * Add your
- * - pre-save hooks
- * - validations
- * - virtuals
- */
 
 /**
  * Methods
@@ -82,4 +75,5 @@ UserSchema.statics = {
 /**
  * @typedef User
  */
-module.exports = mongoose.model('User', UserSchema);
+const UserModel = mongoose.model('User', UserSchema);
+export default UserModel;

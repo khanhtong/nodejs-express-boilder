@@ -1,4 +1,4 @@
-const User = require('../../models/user.model');
+import User from '../../models/user.model.mjs';
 
 /**
  * Load user and append to req.
@@ -77,4 +77,5 @@ function remove(req, res, next) {
     .catch(e => next(e));
 }
 
-module.exports = { load, get, create, update, list, remove };
+const userCtrl = { load, get, create, update, list, remove };
+export default userCtrl;

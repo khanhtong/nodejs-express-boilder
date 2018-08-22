@@ -1,9 +1,10 @@
-const request = require('supertest-as-promised');
-const httpStatus = require('http-status');
-const chai = require('chai'); // eslint-disable-line import/newline-after-import
-const expect = chai.expect;
-const app = require('../index');
+import 'babel-polyfill';
+import request from 'supertest-as-promised';
+import httpStatus from 'http-status';
+import chai from 'chai';
+import app from '../index.mjs';
 
+const expect = chai.expect;
 chai.config.includeStack = true;
 
 describe('## Misc', () => {
@@ -34,7 +35,7 @@ describe('## Misc', () => {
   });
 
   describe('# Get admin site', () => {
-    it('should return 200 statys', (done) => {
+    it('should return 200 status', (done) => {
       request(app)
         .get('/admin')
         .expect(httpStatus.OK)

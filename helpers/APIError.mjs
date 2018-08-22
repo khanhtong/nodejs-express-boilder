@@ -1,4 +1,4 @@
-const httpStatus = require('http-status');
+import httpStatus from 'http-status';
 
 /**
  * @extends Error
@@ -31,5 +31,4 @@ class APIError extends ExtendableError {
   }
 }
 
-
-module.exports = APIError;
+export default APIError;
