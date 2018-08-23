@@ -30,7 +30,7 @@ describe('## User APIs', () => {
       request(app)
         .post('/api/users')
         .send(user)
-        .expect(httpStatus.OK)
+        .expect(httpStatus.CREATED)
         .then((res) => {
           expect(res.body.username).to.equal(user.username);
           expect(res.body.mobileNumber).to.equal(user.mobileNumber);
