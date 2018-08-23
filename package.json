@@ -16,11 +16,8 @@
     "lint": "esw *.mjs server config --color",
     "lint:watch": "yarn lint -- --watch",
     "precommit": "yarn lint && yarn test",
-    "test": "cross-env NODE_ENV=test ./node_modules/.bin/mocha --ui bdd --reporter spec --colors tests --compilers js:babel-register --recursive",
-    "test:watch": "yarn test -- --watch",
-    "test:coverage": "cross-env NODE_ENV=test ./node_modules/.bin/nyc cover _mocha -- --ui bdd --reporter spec --colors tests --compilers js:babel-register --recursive",
-    "test:check-coverage": "yarn test:coverage && nyc check-coverage",
-    "report-coverage": "coveralls < ./coverage/lcov.info"
+    "test": "cross-env NODE_ENV=test PORT=45645 ./node_modules/.bin/mocha --ui bdd --reporter spec --colors tests --compilers js:babel-register --recursive",
+    "test:watch": "yarn test -- --watch"
   },
   "repository": {
     "type": "git",

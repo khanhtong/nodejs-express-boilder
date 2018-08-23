@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
-import httpStatus from 'http-status';
-import APIError from '../helpers/APIError.mjs';
+// import APIError from '../helpers/APIError.mjs';
 /**
  * User Schema
  */
@@ -45,16 +44,22 @@ UserSchema.statics = {
    * @param {ObjectId} id - The objectId of user.
    * @returns {Promise<User, APIError>}
    */
-  get(id) {
-    return this.findById(id)
-      .exec()
-      .then((user) => {
-        if (user) {
-          return user;
-        }
-        const err = new APIError('No such user exists!', httpStatus.NOT_FOUND);
-        return Promise.reject(err);
-      });
+  async get(id) {
+    try {
+      return await this.findById(id);
+    } catch (err) {
+      throw err;
+    }
+    // let user = await this.findById(id);
+    // return this.findById(id)
+    //   .exec()
+    //   .then((user) => {
+    //     if (user) {
+    //       return user;
+    //     }
+    //     const err = new APIError('No such user exists!', httpStatus.NOT_FOUND);
+    //     return Promise.reject(err);
+    //   });
   },
 
   /**
@@ -63,12 +68,17 @@ UserSchema.statics = {
    * @param {number} limit - Limit number of users to be returned.
    * @returns {Promise<User[]>}
    */
-  list({ skip = 0, limit = 50 } = {}) {
-    return this.find()
-      .sort({ createdAt: -1 })
-      .skip(+skip)
-      .limit(+limit)
-      .exec();
+  async list({ skip = 0, limit = 50 } = {}) {
+    try {
+      const users = await this.find()
+        .sort({ createdAt: -1 })
+        .skip(+skip)
+        .limit(+limit)
+        .exec();
+      return users;
+    } catch (err) {
+      throw err;
+    }
   }
 };
 

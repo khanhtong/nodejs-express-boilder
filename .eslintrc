@@ -32,20 +32,22 @@
       0
     ],
     "new-cap": [
-      2,
+      0,
       {
         "capIsNewExceptions": [
           "Immutable"
         ]
       }
-    ]
+    ],
+    "object-shorthand": ["error", "always"],
+    "no-param-reassign": 0
   },
   "env": {
     "node": true,
     "mocha": true
   },
   "parserOptions": {
-    "ecmaVersion": 6,
+    "ecmaVersion": 2017,
     "sourceType": "module"
   },
   "extends": [

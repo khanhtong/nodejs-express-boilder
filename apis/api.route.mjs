@@ -1,7 +1,7 @@
 /* eslint-disable new-cap */
 import express from 'express';
-import userRoutes from './apis/user/user.route.mjs';
-import authRoutes from './apis/auth/auth.route.mjs';
+import userRoutes from './user/user.route.mjs';
+import authRoutes from './auth/auth.route.mjs';
 
 // TODO: use glob to match *.route files
 const apiRouter = express.Router();

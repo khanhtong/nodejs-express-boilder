@@ -10,16 +10,16 @@ import expressWinston from 'express-winston';
 import expressValidation from 'express-validation';
 import helmet from 'helmet';
 import winstonInstance from './winston.mjs';
-import apiRoutes from '../api.route.mjs';
-import adminRoutes from '../admin.route.mjs';
+import apiRoutes from '../apis/api.route.mjs';
+import adminRoutes from '../admin/admin.route.mjs';
 import { env } from './config.mjs';
 import APIError from '../helpers/APIError.mjs';
 
 const app = express();
 
-if (env === 'development') {
-  app.use(logger('dev'));
-}
+// if (env === 'development') {
+//   app.use(logger('dev'));
+// }
 
 // parse body params and attache them to req.body
 app.use(bodyParser.json());
@@ -59,6 +59,7 @@ app.use((err, req, res, next) => {
     // validation error contains errors which is an array of error each containing message[]
     const unifiedErrorMessage = err.errors.map(error => error.messages.join('. ')).join(' and ');
     const error = new APIError(unifiedErrorMessage, err.status, true);
+    // console.log('adasd ==>: ', error);
     return next(error);
   } else if (!(err instanceof APIError)) {
     const apiError = new APIError(err.message, err.status, err.isPublic);
@@ -69,7 +70,7 @@ app.use((err, req, res, next) => {
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
-  const err = new APIError('API not found', httpStatus.NOT_FOUND);
+  const err = new APIError('Path Not Found', httpStatus.NOT_FOUND);
   return next(err);
 });
 
