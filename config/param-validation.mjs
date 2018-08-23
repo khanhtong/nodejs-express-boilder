@@ -3,15 +3,15 @@ import Joi from 'joi';
 export const validateCreateUser = {
   body: {
     username: Joi.string().required(),
-    mobileNumber: Joi.string().regex(/^[0-9]{9,11}$/).required(),
-    email: Joi.string().email()
+    email: Joi.string().email().required(),
+    password: Joi.string().regex(/^.{6,}$/).required()
   }
 };
 
 export const validateUpdateUser = {
   body: {
-    username: Joi.string().required(),
-    mobileNumber: Joi.string().regex(/^[1-9][0-9]{9}$/).required()
+    email: Joi.string().email().required(),
+    password: Joi.string().regex(/^.{6,}$/).required()
   },
   params: {
     userId: Joi.string().hex().required()

@@ -34,7 +34,7 @@ function get(req, res) {
 async function create(req, res, next) {
   const user = new User({
     username: req.body.username,
-    mobileNumber: req.body.mobileNumber,
+    password: req.body.password,
     email: req.body.email
   });
   try {
@@ -53,8 +53,8 @@ async function create(req, res, next) {
  */
 async function update(req, res, next) {
   let user = req.user;
-  user.username = req.body.username;
-  user.mobileNumber = req.body.mobileNumber;
+  user.email = req.body.email;
+  user.password = req.body.password;
   try {
     user = await user.save();
     res.status(200).json(user);

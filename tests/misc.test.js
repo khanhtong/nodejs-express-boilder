@@ -61,12 +61,10 @@ describe('## Misc', () => {
     it('should handle express validation error - username is required', (done) => {
       request(app)
         .post('/api/users')
-        .send({
-          mobileNumber: '1234567890'
-        })
+        .send({})
         .expect(httpStatus.BAD_REQUEST)
         .then((res) => {
-          expect(res.body.message).to.equal('"username" is required');
+          expect(res.body.message).to.equal('"username" is required and "email" is required and "password" is required');
           done();
         })
         .catch(done);

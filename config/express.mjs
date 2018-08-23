@@ -45,7 +45,8 @@ if (env === 'development') {
     winstonInstance,
     meta: true, // optional: log meta data about request (defaults to true)
     msg: 'HTTP {{req.method}} {{req.url}} {{res.statusCode}} {{res.responseTime}}ms',
-    colorStatus: true // Color the status code (default green, 3XX cyan, 4XX yellow, 5XX red).
+    colorStatus: true, // Color the status code (default green, 3XX cyan, 4XX yellow, 5XX red).
+    colorize: true
   }));
 }
 
@@ -59,7 +60,6 @@ app.use((err, req, res, next) => {
     // validation error contains errors which is an array of error each containing message[]
     const unifiedErrorMessage = err.errors.map(error => error.messages.join('. ')).join(' and ');
     const error = new APIError(unifiedErrorMessage, err.status, true);
-    // console.log('adasd ==>: ', error);
     return next(error);
   } else if (!(err instanceof APIError)) {
     const apiError = new APIError(err.message, err.status, err.isPublic);
@@ -77,7 +77,9 @@ app.use((req, res, next) => {
 // log error in winston transports except when executing test suite
 if (env !== 'test') {
   app.use(expressWinston.errorLogger({
-    winstonInstance
+    winstonInstance,
+    dumpExceptions: true,
+    showStack: true
   }));
 }
 

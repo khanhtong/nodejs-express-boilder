@@ -21,8 +21,9 @@ after((done) => {
 
 describe('## User APIs', () => {
   let user = {
-    username: 'KK123',
-    mobileNumber: '1234567890'
+    username: 'khanhtran',
+    email: 'khanhktong@gmail.com',
+    password: 'hjhjhaha'
   };
 
   describe('# POST /api/users', () => {
@@ -33,7 +34,8 @@ describe('## User APIs', () => {
         .expect(httpStatus.CREATED)
         .then((res) => {
           expect(res.body.username).to.equal(user.username);
-          expect(res.body.mobileNumber).to.equal(user.mobileNumber);
+          expect(res.body.email).to.equal(user.email);
+          // expect(res.body.email).to
           user = res.body;
           done();
         })
@@ -48,7 +50,7 @@ describe('## User APIs', () => {
         .expect(httpStatus.OK)
         .then((res) => {
           expect(res.body.username).to.equal(user.username);
-          expect(res.body.mobileNumber).to.equal(user.mobileNumber);
+          expect(res.body.email).to.equal(user.email);
           done();
         })
         .catch(done);
@@ -68,14 +70,14 @@ describe('## User APIs', () => {
 
   describe('# PUT /api/users/:userId', () => {
     it('should update user details', (done) => {
-      user.username = 'KK';
+      user.email = 'khanhtran2@gmai.com';
       request(app)
         .put(`/api/users/${user._id}`)
         .send(user)
         .expect(httpStatus.OK)
         .then((res) => {
-          expect(res.body.username).to.equal('KK');
-          expect(res.body.mobileNumber).to.equal(user.mobileNumber);
+          expect(res.body.username).to.equal(user.username);
+          expect(res.body.email).to.equal('khanhtran2@gmai.com');
           done();
         })
         .catch(done);
@@ -114,7 +116,6 @@ describe('## User APIs', () => {
         .expect(httpStatus.OK)
         .then((res) => {
           expect(res.body.username).to.equal(user.username);
-          expect(res.body.mobileNumber).to.equal(user.mobileNumber);
           done();
         })
         .catch(done);
