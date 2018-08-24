@@ -5,22 +5,28 @@ import jwt from 'jsonwebtoken';
 import chai from 'chai'; // eslint-disable-line import/newline-after-import
 import app from '../index.mjs';
 import { jwtSecret } from '../config/config.mjs';
+import UserModel from '../models/user.model.mjs';
 
 const expect = chai.expect;
 chai.config.includeStack = true;
 
-describe('## Auth APIs', () => {
+describe('## Auth APIs', async () => {
   const validUserCredentials = {
-    username: 'react',
-    password: 'express'
+    username: 'khanhtran',
+    password: 'hjhjhaha',
   };
 
   const invalidUserCredentials = {
-    username: 'react',
-    password: 'IDontKnow'
+    username: 'khanhtran',
+    password: 'passwordsai'
   };
 
   let jwtToken;
+  const user = await UserModel.create({
+    username: 'khanhtran',
+    password: 'hjhjhaha',
+    email: 'khanhkhanh@gmail.com'
+  });
 
   describe('# POST /api/auth/login', () => {
     it('should return Authentication error', (done) => {
@@ -44,7 +50,7 @@ describe('## Auth APIs', () => {
           expect(res.body).to.have.property('token');
           jwt.verify(res.body.token, jwtSecret, (err, decoded) => {
             expect(err).to.not.be.ok; // eslint-disable-line no-unused-expressions
-            expect(decoded.username).to.equal(validUserCredentials.username);
+            expect(decoded.username).to.equal(user.username.toString());
             jwtToken = `Bearer ${res.body.token}`;
             done();
           });

@@ -1,4 +1,3 @@
-/* eslint-disable new-cap */
 import express from 'express';
 import dashboard from './dashboard.mjs';
 

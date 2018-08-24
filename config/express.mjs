@@ -17,9 +17,9 @@ import APIError from '../helpers/APIError.mjs';
 
 const app = express();
 
-// if (env === 'development') {
-//   app.use(logger('dev'));
-// }
+if (env === 'development') {
+  app.use(logger('dev'));
+}
 
 // parse body params and attache them to req.body
 app.use(bodyParser.json());

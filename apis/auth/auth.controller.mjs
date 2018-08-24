@@ -2,12 +2,7 @@ import jwt from 'jsonwebtoken';
 import httpStatus from 'http-status';
 import APIError from '../../helpers/APIError.mjs';
 import { jwtSecret } from '../../config/config.mjs';
-
-// sample user, used for authentication
-const user = {
-  username: 'react',
-  password: 'express'
-};
+import UserModule from '../../models/user.model.mjs';
 
 /**
  * Returns jwt token if valid username and password is provided
@@ -16,21 +11,24 @@ const user = {
  * @param next
  * @returns {*}
  */
-function login(req, res, next) {
-  // Ideally you'll fetch this from the db
-  // Idea here was to show how jwt works with simplicity
-  if (req.body.username === user.username && req.body.password === user.password) {
-    const token = jwt.sign({
-      username: user.username
-    }, jwtSecret);
-    return res.json({
-      token,
-      username: user.username
-    });
+async function login(req, res, next) {
+  try {
+    const user = await UserModule.findOne({ username: req.body.username });
+    if (!user) {
+      return (next(new APIError('Authentication error', httpStatus.UNAUTHORIZED, true)));
+    }
+    const isAuthenticate = await user.authenticate(req.body.password);
+    if (isAuthenticate) {
+      const token = jwt.sign({
+        _id: user._id,
+        username: user.username
+      }, jwtSecret);
+      return res.json({ token });
+    }
+    return (next(new APIError('Authentication error', httpStatus.UNAUTHORIZED, true)));
+  } catch (err) {
+    return next(err);
   }
-
-  const err = new APIError('Authentication error', httpStatus.UNAUTHORIZED, true);
-  return next(err);
 }
 
 /**
